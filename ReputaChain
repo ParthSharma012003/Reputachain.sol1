@@ -1,0 +1,63 @@
+// SPDX-License-Identifier: MIT
+
+pragma solidity ^0.8.0;
+
+
+
+contract ReputaChain {
+
+    address public admin;
+
+
+
+    // Mapping of wallet addresses to their reputation scores
+
+    mapping(address => uint256) public reputationScores;
+
+
+
+    // Event emitted when a score is updated
+
+    event ReputationUpdated(address indexed user, uint256 newScore);
+
+
+
+    modifier onlyAdmin() {
+
+        require(msg.sender == admin, "Only admin can perform this action");
+
+        _;
+
+    }
+
+
+
+    constructor() {
+
+        admin = msg.sender; // Set contract deployer as admin
+
+    }
+
+
+
+    // Assign or update a reputation score
+
+    function updateReputation(address user, uint256 score) external onlyAdmin {
+
+        reputationScores[user] = score;
+
+        emit ReputationUpdated(user, score);
+
+    }
+
+
+
+    // View reputation score (optional, since public mapping already allows this)
+
+    function getReputation(address user) external view returns (uint256) {
+
+        return reputationScores[user];
+
+    }
+
+}
